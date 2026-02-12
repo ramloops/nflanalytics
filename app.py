@@ -17,12 +17,8 @@ st.set_page_config(
 )
 
 # ============================================
-# THEME TOGGLE
+# LIGHT MODE ONLY (Mobile-friendly)
 # ============================================
-if "dark_mode" not in st.session_state:
-    st.session_state.dark_mode = False
-
-# Mobile-responsive CSS
 mobile_css = """
     #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
@@ -70,42 +66,28 @@ mobile_css = """
             font-size: 0.75rem !important;
         }
     }
+    
+    /* Light mode - ensure readable text */
+    .stApp {
+        background-color: #ffffff;
+        color: #1a1a1a;
+    }
+    
+    [data-testid="stChatMessage"] {
+        background-color: #f0f2f6;
+        color: #1a1a1a !important;
+    }
+    
+    [data-testid="stChatMessage"] p {
+        color: #1a1a1a !important;
+    }
+    
+    [data-testid="stChatMessage"] * {
+        color: #1a1a1a !important;
+    }
 """
 
-if st.session_state.dark_mode:
-    st.markdown(f"""<style>
-        {mobile_css}
-        .stApp {{ background-color: #0e1117; color: #fafafa; }}
-        [data-testid="stSidebar"] {{ background-color: #161b22; }}
-        [data-testid="stMetricValue"] {{ color: #ffffff; }}
-        [data-testid="stMetricLabel"] {{ color: #8b949e; }}
-        .stTabs [data-baseweb="tab-list"] {{ gap: 8px; }}
-        .stTabs [data-baseweb="tab"] {{ background-color: transparent; color: #8b949e; }}
-        .stTabs [aria-selected="true"] {{ background-color: #21262d; color: #ffffff; }}
-        .stDataFrame {{ background-color: #161b22; }}
-        [data-testid="stChatMessage"] {{ background-color: #161b22; }}
-        .stButton > button {{ background-color: #21262d; color: #ffffff; border: 1px solid #30363d; }}
-        .stButton > button:hover {{ background-color: #30363d; border-color: #8b949e; }}
-        [data-testid="stChatInput"] {{ background-color: #161b22; }}
-        hr {{ border-color: #30363d; }}
-    </style>""", unsafe_allow_html=True)
-else:
-    st.markdown(f"""<style>
-        {mobile_css}
-        .stApp {{ background-color: #ffffff; color: #1a1a1a; }}
-        [data-testid="stSidebar"] {{ background-color: #f6f8fa; }}
-        [data-testid="stMetricValue"] {{ color: #1a1a1a; }}
-        [data-testid="stMetricLabel"] {{ color: #57606a; }}
-        .stTabs [data-baseweb="tab-list"] {{ gap: 8px; }}
-        .stTabs [data-baseweb="tab"] {{ background-color: transparent; color: #57606a; }}
-        .stTabs [aria-selected="true"] {{ background-color: #f6f8fa; color: #1a1a1a; }}
-        .stDataFrame {{ background-color: #f6f8fa; }}
-        [data-testid="stChatMessage"] {{ background-color: #f6f8fa; }}
-        .stButton > button {{ background-color: #f6f8fa; color: #1a1a1a; border: 1px solid #d0d7de; }}
-        .stButton > button:hover {{ background-color: #eaeef2; border-color: #57606a; }}
-        [data-testid="stChatInput"] {{ background-color: #f6f8fa; }}
-        hr {{ border-color: #d0d7de; }}
-    </style>""", unsafe_allow_html=True)
+st.markdown(f"<style>{mobile_css}</style>", unsafe_allow_html=True)
 
 # ============================================
 # SUPABASE CONNECTION
@@ -301,16 +283,9 @@ def grade_decision(row):
 fourth_downs['GRADE'] = fourth_downs.apply(grade_decision, axis=1)
 
 # ============================================
-# HEADER WITH DARK MODE TOGGLE
+# HEADER
 # ============================================
-header_col1, header_col2 = st.columns([4, 1])
-
-with header_col1:
-    st.title("🏈 Super Bowl LX: 4th Down Analysis")
-    
-with header_col2:
-    st.session_state.dark_mode = st.toggle("🌙", value=st.session_state.dark_mode, help="Dark/Light Mode")
-
+st.title("🏈 Super Bowl LX: 4th Down Analysis")
 st.markdown("### Seahawks 29 - Patriots 13")
 st.markdown("*Why conservative play-calling cost New England the game*")
 
