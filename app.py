@@ -20,7 +20,7 @@ st.set_page_config(
 # THEME TOGGLE
 # ============================================
 if "dark_mode" not in st.session_state:
-    st.session_state.dark_mode = True
+    st.session_state.dark_mode = False
 
 # Mobile-responsive CSS
 mobile_css = """
