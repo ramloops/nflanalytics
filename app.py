@@ -28,136 +28,143 @@ st.markdown("""
     
     /* Tighter container padding */
     .main .block-container {
-        padding: 1rem 1rem 2rem 1rem !important;
+        padding: 0.75rem 1rem 2rem 1rem !important;
         max-width: 100% !important;
     }
     
-    /* Light mode base */
+    /* Light mode base - FORCE dark text */
     .stApp {
-        background-color: #ffffff;
-        color: #1a1a1a;
+        background-color: #ffffff !important;
+        color: #000000 !important;
     }
     
-    /* Tighter headings */
-    h1 {
+    /* ALL TEXT - force black */
+    p, span, label, div {
+        color: #000000 !important;
+    }
+    
+    /* Metrics - FORCE visible text */
+    [data-testid="stMetricValue"] {
         font-size: 1.5rem !important;
+        color: #000000 !important;
+        font-weight: 700 !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        font-size: 0.75rem !important;
+        color: #333333 !important;
+        font-weight: 500 !important;
+    }
+    
+    [data-testid="stMetricDelta"] {
+        color: #d32f2f !important;
+    }
+    
+    /* Tabs - FORCE visible text */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0 !important;
+        background-color: #f5f5f5 !important;
+        border-radius: 8px !important;
+        padding: 4px !important;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        color: #000000 !important;
+        font-weight: 500 !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.85rem !important;
+        background-color: transparent !important;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-radius: 6px !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Headings */
+    h1 {
+        font-size: 1.4rem !important;
+        color: #000000 !important;
         margin-bottom: 0.25rem !important;
-        line-height: 1.2 !important;
     }
     
     h2, h3 {
         font-size: 1.1rem !important;
-        margin-top: 0.5rem !important;
-        margin-bottom: 0.5rem !important;
+        color: #000000 !important;
+        margin: 0.5rem 0 !important;
     }
     
-    /* Compact metrics */
-    [data-testid="stMetricValue"] {
-        font-size: 1.25rem !important;
+    /* Subheader text */
+    .stMarkdown p {
+        color: #000000 !important;
     }
     
-    [data-testid="stMetricLabel"] {
-        font-size: 0.7rem !important;
-    }
-    
-    [data-testid="metric-container"] {
-        padding: 0.5rem 0 !important;
-    }
-    
-    /* Tabs - compact */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 4px !important;
-        padding: 0 !important;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.8rem !important;
-    }
-    
-    /* Chat messages - ensure readable */
+    /* Chat messages */
     [data-testid="stChatMessage"] {
-        background-color: #f0f2f6 !important;
+        background-color: #f5f5f5 !important;
         padding: 0.75rem !important;
         margin: 0.25rem 0 !important;
+        border-radius: 8px !important;
     }
     
     [data-testid="stChatMessage"] p,
     [data-testid="stChatMessage"] span,
-    [data-testid="stChatMessage"] * {
-        color: #1a1a1a !important;
+    [data-testid="stChatMessage"] div {
+        color: #000000 !important;
     }
     
-    /* Chat input */
-    [data-testid="stChatInput"] {
-        padding: 0 !important;
-    }
-    
-    [data-testid="stChatInput"] textarea {
-        font-size: 16px !important;
-    }
-    
-    /* Buttons - compact */
+    /* Buttons */
     .stButton > button {
-        padding: 0.4rem 0.75rem !important;
-        font-size: 0.8rem !important;
-        margin: 0.125rem 0 !important;
+        background-color: #f0f0f0 !important;
+        color: #000000 !important;
+        border: 1px solid #ddd !important;
+        padding: 0.5rem 1rem !important;
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
     }
     
-    /* Reduce vertical gaps */
+    /* Alert/Error box */
+    .stAlert {
+        padding: 0.75rem !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    /* Reduce gaps */
     .element-container {
         margin-bottom: 0.5rem !important;
     }
     
-    .stMarkdown {
-        margin-bottom: 0.25rem !important;
-    }
-    
-    /* Dividers - thinner */
     hr {
-        margin: 0.75rem 0 !important;
-    }
-    
-    /* Alert boxes - compact */
-    .stAlert {
-        padding: 0.5rem 0.75rem !important;
         margin: 0.5rem 0 !important;
+        border-color: #e0e0e0 !important;
     }
     
-    /* Dataframe - compact */
-    .stDataFrame {
-        font-size: 0.75rem !important;
+    /* Caption text */
+    .stCaption, small {
+        color: #666666 !important;
     }
     
-    /* Sidebar - if shown */
-    [data-testid="stSidebar"] {
-        background-color: #f8f9fa;
-    }
-    
-    /* MOBILE SPECIFIC */
+    /* MOBILE */
     @media (max-width: 768px) {
         .main .block-container {
             padding: 0.5rem 0.75rem 1.5rem 0.75rem !important;
         }
         
-        /* Stack columns */
+        /* Keep metrics in a row on mobile */
         [data-testid="column"] {
-            width: 100% !important;
-            flex: 1 1 100% !important;
-            min-width: 100% !important;
-            padding: 0 !important;
+            padding: 0 0.25rem !important;
         }
         
-        /* Smaller title */
         h1 {
-            font-size: 1.25rem !important;
+            font-size: 1.2rem !important;
         }
         
         h2, h3 {
             font-size: 1rem !important;
         }
         
-        /* Smaller metrics */
         [data-testid="stMetricValue"] {
             font-size: 1.1rem !important;
         }
@@ -166,46 +173,24 @@ st.markdown("""
             font-size: 0.65rem !important;
         }
         
-        /* 4-column metrics - tighter */
-        [data-testid="column"] [data-testid="metric-container"] {
-            padding: 0.25rem 0 !important;
-        }
-        
-        /* Tabs - smaller */
         .stTabs [data-baseweb="tab"] {
-            padding: 0.4rem 0.5rem !important;
-            font-size: 0.7rem !important;
+            padding: 0.4rem 0.6rem !important;
+            font-size: 0.75rem !important;
         }
         
-        /* Buttons - full width */
         .stButton > button {
             width: 100% !important;
-            padding: 0.5rem !important;
-            font-size: 0.8rem !important;
+            padding: 0.6rem !important;
         }
         
-        /* Reduce all spacing */
-        .element-container {
-            margin-bottom: 0.25rem !important;
-        }
-        
-        hr {
-            margin: 0.5rem 0 !important;
-        }
-        
-        /* Chat - compact */
-        [data-testid="stChatMessage"] {
-            padding: 0.5rem !important;
-            font-size: 0.85rem !important;
+        /* Chat input - prevent zoom */
+        [data-testid="stChatInput"] textarea {
+            font-size: 16px !important;
         }
     }
     
     /* SMALL PHONES */
     @media (max-width: 400px) {
-        .main .block-container {
-            padding: 0.25rem 0.5rem 1rem 0.5rem !important;
-        }
-        
         h1 {
             font-size: 1.1rem !important;
         }
@@ -219,8 +204,8 @@ st.markdown("""
         }
         
         .stTabs [data-baseweb="tab"] {
-            padding: 0.3rem 0.4rem !important;
-            font-size: 0.65rem !important;
+            padding: 0.35rem 0.4rem !important;
+            font-size: 0.7rem !important;
         }
     }
 </style>
