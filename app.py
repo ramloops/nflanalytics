@@ -17,77 +17,214 @@ st.set_page_config(
 )
 
 # ============================================
-# LIGHT MODE ONLY (Mobile-friendly)
+# LIGHT MODE + MOBILE-OPTIMIZED CSS
 # ============================================
-mobile_css = """
-    #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
-    [data-testid="stHeader"] {display: none;}
+st.markdown("""
+<style>
+    /* Hide Streamlit chrome */
+    #MainMenu, header, footer, [data-testid="stHeader"] {
+        display: none !important;
+    }
     
+    /* Tighter container padding */
     .main .block-container {
-        padding-top: 1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding: 1rem 1rem 2rem 1rem !important;
+        max-width: 100% !important;
     }
     
-    @media (max-width: 768px) {
-        .main .block-container {
-            padding-top: 0.5rem;
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-        }
-        [data-testid="column"] {
-            width: 100% !important;
-            flex: 1 1 100% !important;
-            min-width: 100% !important;
-        }
-        h1 { font-size: 1.5rem !important; }
-        h2, h3 { font-size: 1.2rem !important; }
-        [data-testid="stMetricValue"] { font-size: 1.25rem !important; }
-        [data-testid="stMetricLabel"] { font-size: 0.75rem !important; }
-        .stTabs [data-baseweb="tab"] {
-            padding: 0.5rem 0.75rem !important;
-            font-size: 0.85rem !important;
-        }
-        .stButton > button {
-            width: 100% !important;
-            padding: 0.5rem !important;
-            font-size: 0.85rem !important;
-        }
-        [data-testid="stChatInput"] textarea { font-size: 16px !important; }
-    }
-    
-    @media (max-width: 480px) {
-        h1 { font-size: 1.25rem !important; }
-        [data-testid="stMetricValue"] { font-size: 1rem !important; }
-        .stTabs [data-baseweb="tab"] {
-            padding: 0.4rem 0.5rem !important;
-            font-size: 0.75rem !important;
-        }
-    }
-    
-    /* Light mode - ensure readable text */
+    /* Light mode base */
     .stApp {
         background-color: #ffffff;
         color: #1a1a1a;
     }
     
+    /* Tighter headings */
+    h1 {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.25rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    h2, h3 {
+        font-size: 1.1rem !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Compact metrics */
+    [data-testid="stMetricValue"] {
+        font-size: 1.25rem !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        font-size: 0.7rem !important;
+    }
+    
+    [data-testid="metric-container"] {
+        padding: 0.5rem 0 !important;
+    }
+    
+    /* Tabs - compact */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 4px !important;
+        padding: 0 !important;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    /* Chat messages - ensure readable */
     [data-testid="stChatMessage"] {
-        background-color: #f0f2f6;
-        color: #1a1a1a !important;
+        background-color: #f0f2f6 !important;
+        padding: 0.75rem !important;
+        margin: 0.25rem 0 !important;
     }
     
-    [data-testid="stChatMessage"] p {
-        color: #1a1a1a !important;
-    }
-    
+    [data-testid="stChatMessage"] p,
+    [data-testid="stChatMessage"] span,
     [data-testid="stChatMessage"] * {
         color: #1a1a1a !important;
     }
-"""
-
-st.markdown(f"<style>{mobile_css}</style>", unsafe_allow_html=True)
+    
+    /* Chat input */
+    [data-testid="stChatInput"] {
+        padding: 0 !important;
+    }
+    
+    [data-testid="stChatInput"] textarea {
+        font-size: 16px !important;
+    }
+    
+    /* Buttons - compact */
+    .stButton > button {
+        padding: 0.4rem 0.75rem !important;
+        font-size: 0.8rem !important;
+        margin: 0.125rem 0 !important;
+    }
+    
+    /* Reduce vertical gaps */
+    .element-container {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .stMarkdown {
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Dividers - thinner */
+    hr {
+        margin: 0.75rem 0 !important;
+    }
+    
+    /* Alert boxes - compact */
+    .stAlert {
+        padding: 0.5rem 0.75rem !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    /* Dataframe - compact */
+    .stDataFrame {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Sidebar - if shown */
+    [data-testid="stSidebar"] {
+        background-color: #f8f9fa;
+    }
+    
+    /* MOBILE SPECIFIC */
+    @media (max-width: 768px) {
+        .main .block-container {
+            padding: 0.5rem 0.75rem 1.5rem 0.75rem !important;
+        }
+        
+        /* Stack columns */
+        [data-testid="column"] {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+            min-width: 100% !important;
+            padding: 0 !important;
+        }
+        
+        /* Smaller title */
+        h1 {
+            font-size: 1.25rem !important;
+        }
+        
+        h2, h3 {
+            font-size: 1rem !important;
+        }
+        
+        /* Smaller metrics */
+        [data-testid="stMetricValue"] {
+            font-size: 1.1rem !important;
+        }
+        
+        [data-testid="stMetricLabel"] {
+            font-size: 0.65rem !important;
+        }
+        
+        /* 4-column metrics - tighter */
+        [data-testid="column"] [data-testid="metric-container"] {
+            padding: 0.25rem 0 !important;
+        }
+        
+        /* Tabs - smaller */
+        .stTabs [data-baseweb="tab"] {
+            padding: 0.4rem 0.5rem !important;
+            font-size: 0.7rem !important;
+        }
+        
+        /* Buttons - full width */
+        .stButton > button {
+            width: 100% !important;
+            padding: 0.5rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        /* Reduce all spacing */
+        .element-container {
+            margin-bottom: 0.25rem !important;
+        }
+        
+        hr {
+            margin: 0.5rem 0 !important;
+        }
+        
+        /* Chat - compact */
+        [data-testid="stChatMessage"] {
+            padding: 0.5rem !important;
+            font-size: 0.85rem !important;
+        }
+    }
+    
+    /* SMALL PHONES */
+    @media (max-width: 400px) {
+        .main .block-container {
+            padding: 0.25rem 0.5rem 1rem 0.5rem !important;
+        }
+        
+        h1 {
+            font-size: 1.1rem !important;
+        }
+        
+        [data-testid="stMetricValue"] {
+            font-size: 0.95rem !important;
+        }
+        
+        [data-testid="stMetricLabel"] {
+            font-size: 0.6rem !important;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            padding: 0.3rem 0.4rem !important;
+            font-size: 0.65rem !important;
+        }
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # ============================================
 # SUPABASE CONNECTION
