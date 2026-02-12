@@ -222,14 +222,23 @@ def get_fallback_data():
     ])
 
 # ============================================
-# CLAUDE API CHAT
+# GEMINI AI CHAT (Free!)
 # ============================================
 def get_ai_response(question, fourth_downs_df):
-    """Get AI response using Claude API"""
+    """Get AI response using Google Gemini API"""
+    
+    # Session limit: 10 questions per session
+    if "question_count" not in st.session_state:
+        st.session_state.question_count = 0
+    
+    if st.session_state.question_count >= 10:
+        return "⚠️ You've reached the limit of 10 questions per session. Refresh the page to start a new session."
+    
+    st.session_state.question_count += 1
     
     data_context = fourth_downs_df.to_string()
     
-    system_prompt = f"""You are an NFL analytics expert analyzing the Patriots' 4th down decisions in Super Bowl LX (Seahawks 29, Patriots 13).
+    prompt = f"""You are an NFL analytics expert analyzing the Patriots' 4th down decisions in Super Bowl LX (Seahawks 29, Patriots 13).
 
 Here is the data on all Patriots 4th down plays:
 {data_context}
@@ -240,26 +249,24 @@ Key facts:
 - WPA = Win Probability Added (negative means the decision hurt their chances)
 - EPA = Expected Points Added
 
-Answer questions concisely and reference specific plays from the data."""
+Answer questions concisely and reference specific plays from the data.
+
+Question: {question}"""
 
     try:
-        import anthropic
+        import google.generativeai as genai
         
-        api_key = st.secrets.get("ANTHROPIC_API_KEY") or st.secrets.get("anthropic", {}).get("api_key")
+        api_key = st.secrets.get("GEMINI_API_KEY") or st.secrets.get("gemini", {}).get("api_key")
         
         if not api_key:
-            return "⚠️ Claude API key not configured. Add ANTHROPIC_API_KEY to your Streamlit secrets."
+            return "⚠️ Gemini API key not configured. Add GEMINI_API_KEY to your Streamlit secrets."
         
-        client = anthropic.Anthropic(api_key=api_key)
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-1.5-flash')
         
-        message = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=500,
-            system=system_prompt,
-            messages=[{"role": "user", "content": question}]
-        )
+        response = model.generate_content(prompt)
         
-        return message.content[0].text
+        return response.text
         
     except Exception as e:
         return f"Error: {str(e)[:150]}"
@@ -334,7 +341,7 @@ with tab_home:
 
     with chat_col:
         st.subheader("🤖 Ask About the Game")
-        st.caption("Powered by Claude AI")
+        st.caption(f"Powered by Gemini AI • {10 - st.session_state.get('question_count', 0)} questions left")
         
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -476,7 +483,7 @@ with st.sidebar:
         st.warning("Supabase: Using fallback data")
     
     st.markdown("---")
-    st.caption("Data: Supabase | AI: Claude")
+    st.caption("Data: Supabase | AI: Gemini")
 
 st.markdown("---")
-st.caption("Built with Streamlit + Supabase + Claude")  
+st.caption("Built with Streamlit + Supabase + Gemini")
