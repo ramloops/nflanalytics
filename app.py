@@ -222,10 +222,10 @@ def get_fallback_data():
     ])
 
 # ============================================
-# GEMINI AI CHAT (Free!)
+# GROQ AI CHAT (Free!)
 # ============================================
 def get_ai_response(question, fourth_downs_df):
-    """Get AI response using Google Gemini API"""
+    """Get AI response using Groq API (free, fast)"""
     
     # Session limit: 10 questions per session
     if "question_count" not in st.session_state:
@@ -238,7 +238,7 @@ def get_ai_response(question, fourth_downs_df):
     
     data_context = fourth_downs_df.to_string()
     
-    prompt = f"""You are an NFL analytics expert analyzing the Patriots' 4th down decisions in Super Bowl LX (Seahawks 29, Patriots 13).
+    system_prompt = f"""You are an NFL analytics expert analyzing the Patriots' 4th down decisions in Super Bowl LX (Seahawks 29, Patriots 13).
 
 Here is the data on all Patriots 4th down plays:
 {data_context}
@@ -249,24 +249,28 @@ Key facts:
 - WPA = Win Probability Added (negative means the decision hurt their chances)
 - EPA = Expected Points Added
 
-Answer questions concisely and reference specific plays from the data.
-
-Question: {question}"""
+Answer questions concisely and reference specific plays from the data."""
 
     try:
-        import google.generativeai as genai
+        from groq import Groq
         
-        api_key = st.secrets.get("GEMINI_API_KEY") or st.secrets.get("gemini", {}).get("api_key")
+        api_key = st.secrets.get("GROQ_API_KEY") or st.secrets.get("groq", {}).get("api_key")
         
         if not api_key:
-            return "⚠️ Gemini API key not configured. Add GEMINI_API_KEY to your Streamlit secrets."
+            return "⚠️ Groq API key not configured. Add GROQ_API_KEY to your Streamlit secrets."
         
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        client = Groq(api_key=api_key)
         
-        response = model.generate_content(prompt)
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": question}
+            ],
+            max_tokens=500
+        )
         
-        return response.text
+        return response.choices[0].message.content
         
     except Exception as e:
         return f"Error: {str(e)[:150]}"
@@ -341,7 +345,7 @@ with tab_home:
 
     with chat_col:
         st.subheader("🤖 Ask About the Game")
-        st.caption(f"Powered by Gemini AI • {10 - st.session_state.get('question_count', 0)} questions left")
+        st.caption(f"Powered by Groq AI • {10 - st.session_state.get('question_count', 0)} questions left")
         
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -483,7 +487,7 @@ with st.sidebar:
         st.warning("Supabase: Using fallback data")
     
     st.markdown("---")
-    st.caption("Data: Supabase | AI: Gemini")
+    st.caption("Data: Supabase | AI: Groq")
 
 st.markdown("---")
-st.caption("Built with Streamlit + Supabase + Gemini")
+st.caption("Built with Streamlit + Supabase + Groq")
